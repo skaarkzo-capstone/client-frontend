@@ -13,7 +13,7 @@ export default function Home() {
       style={{ backgroundColor: "rgb(37, 37, 37)", minHeight: "100vh" }}
     >
       <div className="absolute top-8 text-white">
-        <Link href="/" className="text-[21px] text-white">
+        <Link href="/" className="text-[21px] text-white hover:opacity-70">
           Home
         </Link>
       </div>
@@ -23,7 +23,11 @@ export default function Home() {
           className="text-[67px] mb-8 tracking-widest"
           style={{ fontFamily: "var(--font-aboreto)" }}
         >
-          SUST<span style={{ color: "rgb(30, 106, 39)" }}>AI</span>N
+          SUST
+          <span className="bg-gradient-to-b from-pink-500 to-blue-700 text-transparent bg-clip-text">
+            AI
+          </span>
+          N
         </h1>
 
         <div className="relative mt-4 mb-20">
