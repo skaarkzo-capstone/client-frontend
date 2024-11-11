@@ -10,8 +10,11 @@ export default function Home() {
         <h3 className="text-[21px] mb-4">
           <Link href="/">Home</Link>
         </h3>
-        <h1 className="text-[67px] font-aboreto">
-          S U S T <span style={{ color: "rgb(30, 106, 39)" }}>A I </span>N
+        <h1
+          className="text-[67px] mb-8 tracking-widest"
+          style={{ fontFamily: "var(--font-aboreto)" }}
+        >
+          SUST<span style={{ color: "rgb(30, 106, 39)" }}>AI</span>N
         </h1>
       </div>
     </div>

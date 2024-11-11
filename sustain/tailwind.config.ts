@@ -16,6 +16,9 @@ export default {
         ibarra: ["var(--font-ibarra)", "serif"],
       },
     },
+    letterSpacing: {
+      widest: ".3em",
+    },
   },
   plugins: [],
 } satisfies Config;
