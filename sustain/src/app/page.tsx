@@ -28,7 +28,7 @@ export default function Home() {
 
         <div className="relative mt-4 mb-20">
           <div className="flex items-center w-[400px] bg-[rgb(54,54,54)] border-[rgb(118,118,118)] border rounded-full py-2 px-4">
-            <FaSearch className="text-white mr-2" />
+            <FaSearch className="text-white mr-4" />
 
             <input
               type="text"
@@ -40,7 +40,7 @@ export default function Home() {
             />
 
             <button onClick={logMessage}>
-              <div className="flex items-center justify-center w-8 h-8 ml-2 border border-white rounded-full">
+              <div className="flex items-center justify-center w-8 h-8 ml-2 border border-white rounded-full hover:bg-white hover:bg-opacity-20">
                 <FaArrowUp className="text-white" />
               </div>
             </button>
