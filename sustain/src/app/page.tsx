@@ -42,7 +42,7 @@ export default function Home() {
               value={inputValue}
               onChange={handleInputChange}
               onKeyDown={(e) => e.key === "Enter" && logMessage()}
-              className="flex-grow bg-transparent text-white placeholder-white outline-none"
+              className="flex-grow bg-transparent text-white placeholder-white outline-none hover:opacity-70"
             />
 
             <button onClick={logMessage}>
