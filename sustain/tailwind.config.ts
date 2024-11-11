@@ -18,6 +18,8 @@ export default {
       },
     },
     letterSpacing: {
+      wide: ".025em",
+      wider: ".15em",
       widest: ".3em",
     },
   },
