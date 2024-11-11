@@ -17,6 +17,9 @@ export default {
         ibarra: ["var(--font-ibarra)", "serif"],
       },
     },
+    letterSpacing: {
+      widest: ".3em",
+    },
   },
   daisyui: {
     themes: ["dark"],

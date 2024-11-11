@@ -22,15 +22,15 @@ export default function Home() {
 
       <div className="flex flex-col items-center text-white mt-20">
         <h1
-          className="text-[67px] mb-8"
+          className="text-[67px] mb-8 tracking-widest"
           style={{ fontFamily: "var(--font-aboreto)" }}
         >
-          SUSTAIN
+          SUST<span style={{ color: "rgb(30, 106, 39)" }}>AI</span>N
         </h1>
 
         <div className="relative mt-4 mb-20">
           <div className="flex items-center w-[400px] bg-[rgb(54,54,54)] border-[rgb(118,118,118)] border rounded-full py-2 px-4">
-            <FaSearch className="text-white mr-2" />
+            <FaSearch className="text-white mr-4" />
 
             <input
               type="text"
@@ -42,7 +42,7 @@ export default function Home() {
             />
 
             <button onClick={logMessage}>
-              <div className="flex items-center justify-center w-8 h-8 ml-2 border border-white rounded-full">
+              <div className="flex items-center justify-center w-8 h-8 ml-2 border border-white rounded-full hover:bg-white hover:bg-opacity-20">
                 <FaArrowUp className="text-white" />
               </div>
             </button>
