@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { FaSearch, FaArrowUp } from "react-icons/fa";
 import evaluateCompanySearch from "./hooks/EvaluateCompanySearch";
+import CompanyCard from "./components/CompanyCard";
+import CompanyData from "./hooks/CompanyData";
 
 export default function Home() {
   const { inputValue, handleInputChange, logMessage } = evaluateCompanySearch();
@@ -40,7 +42,7 @@ export default function Home() {
               value={inputValue}
               onChange={handleInputChange}
               onKeyDown={(e) => e.key === "Enter" && logMessage()}
-              className="flex-grow bg-transparent text-white placeholder-white outline-none"
+              className="flex-grow bg-transparent text-white placeholder-white outline-none hover:opacity-70"
             />
 
             <button onClick={logMessage}>
@@ -50,6 +52,31 @@ export default function Home() {
             </button>
           </div>
         </div>
+
+        <h2 className="text-[48px] font-semibold mb-8">Evaluated Companies</h2>
+
+        <div className="flex items-center py-6 px-4 w-[723px] h-[57px] mb-4 font-semibold">
+          <span className="text-white font-semibold text-[24px] w-[250px]">
+            Company Name
+          </span>
+
+          <span className="text-white font-semibold text-[24px] w-[200px] text-center">
+            Evaluation Date
+          </span>
+
+          <span className="text-white font-semibold text-[24px] ml-auto">
+            Score
+          </span>
+        </div>
+
+        {CompanyData.map((company, index) => (
+          <CompanyCard
+            key={index}
+            name={company.name}
+            date={company.date}
+            score={company.score}
+          />
+        ))}
       </div>
     </div>
   );
