@@ -19,7 +19,12 @@ export default function Home() {
       </div>
 
       <div className="flex flex-col items-center text-white mt-20">
-        <h1 className="text-[67px] font-aboreto mb-8">SUSTAIN</h1>
+        <h1
+          className="text-[67px] mb-8 tracking-widest"
+          style={{ fontFamily: "var(--font-aboreto)" }}
+        >
+          SUST<span style={{ color: "rgb(30, 106, 39)" }}>AI</span>N
+        </h1>
 
         <div className="relative mt-4 mb-20">
           <div className="flex items-center w-[400px] bg-[rgb(54,54,54)] border-[rgb(118,118,118)] border rounded-full py-2 px-4">
