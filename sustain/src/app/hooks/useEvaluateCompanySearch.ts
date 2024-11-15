@@ -1,4 +1,4 @@
-import useInputState from "./useInputState";
+import useInputState from "./utils/useInputState";
 import useLogMessage from "./useLogMessage";
 
 const useEvaluateCompanySearch = () => {
