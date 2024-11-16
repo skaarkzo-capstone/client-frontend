@@ -1,14 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { Snackbar, Alert } from "@mui/material";
 import { FaSearch, FaArrowUp } from "react-icons/fa";
 import useEvaluateCompanySearch from "./hooks/useEvaluateCompanySearch";
 import CompanyCard from "./components/CompanyCard";
-import CompanyData from "./data/CompanyData";
+import useFetchEvaluatedCompanies from "./hooks/useFetchEvaluatedCompanies";
+import { formatDate } from "./hooks/utils/formatDate";
 
 export default function Home() {
-  const { inputValue, handleInputChange, logMessage } =
+  const { inputValue, handleInputChange, logMessage, snackbar, closeSnackbar, handleError } =
     useEvaluateCompanySearch();
+  const { companies, isLoading } = useFetchEvaluatedCompanies(handleError);
 
   return (
     <div
@@ -53,32 +56,49 @@ export default function Home() {
             </button>
           </div>
         </div>
+        
+        <h2 className="text-[48px] mb-8">Evaluated Companies</h2>
 
-        <h2 className="text-[48px] font-semibold mb-8">Evaluated Companies</h2>
+        {isLoading ? (
+          <p className="text-white">Loading...</p>
+        ) : (
+          <>
+            <div className="flex items-center py-6 px-4 w-[723px] h-[57px] mb-4">
+              <span className="text-white text-[24px] w-[250px]">
+                Company Name
+              </span>
 
-        <div className="flex items-center py-6 px-4 w-[723px] h-[57px] mb-4 font-semibold">
-          <span className="text-white font-semibold text-[24px] w-[250px]">
-            Company Name
-          </span>
+              <span className="text-white text-[24px] w-[200px] text-center">
+                Evaluation Date
+              </span>
 
-          <span className="text-white font-semibold text-[24px] w-[200px] text-center">
-            Evaluation Date
-          </span>
+              <span className="text-white text-[24px] ml-auto">
+                Score
+              </span>
+            </div>
 
-          <span className="text-white font-semibold text-[24px] ml-auto">
-            Score
-          </span>
-        </div>
-
-        {CompanyData.map((company, index) => (
-          <CompanyCard
-            key={index}
-            name={company.name}
-            date={company.date}
-            score={company.score}
-          />
-        ))}
+            {companies.map((company) => (
+              <CompanyCard
+                key={company.id}
+                name={company.name}
+                date={formatDate(company.date)}
+                score={company.score}
+              />
+            ))}
+          </>
+        )}
       </div>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={closeSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert onClose={closeSnackbar} severity="error" sx={{ width: "100%" }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
