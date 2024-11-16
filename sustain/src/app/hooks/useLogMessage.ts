@@ -21,10 +21,20 @@ const useLogMessage = (
   };
 
   const handleError = (contextMessage: string, error: unknown) => {
-    const errorMessage =
-      error instanceof Error
-        ? `${contextMessage}: ${error.message}`
-        : `${contextMessage}: An unknown error occurred`;
+    let errorMessage = `${contextMessage}: An unknown error occurred`;
+
+    if (error instanceof TypeError && error.message.includes("Failed to fetch")) {
+      errorMessage = "Backend is not responding. Please try again later.";
+    } else if (error instanceof Error && error.message.includes("Request timed out")) {
+      errorMessage = "The database is not responding. Please try again later.";
+    } else if (
+      error instanceof Error &&
+      error.message.includes("Database not responding")
+    ) {
+      errorMessage = "Database is not responding. Please contact support.";
+    } else if (error instanceof Error) {
+      errorMessage = `${contextMessage}: ${error.message}`;
+    }
 
     setSnackbar({
       open: true,

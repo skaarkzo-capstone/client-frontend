@@ -6,6 +6,10 @@ type Company = {
   reasoning: string;
 };
 
+const isError = (error: unknown): error is Error => {
+  return typeof error === "object" && error !== null && "message" in error;
+};
+
 export const postCompanySearch = async (
   companyName: string
 ): Promise<Company[]> => {
@@ -26,22 +30,42 @@ export const postCompanySearch = async (
 
     return await response.json();
   } catch (error: unknown) {
-    throw new Error(`Error in API request: ${error instanceof Error ? error.message : "Unknown error"}`);
+    if (isError(error)) {
+      throw new Error(`Error in API request: ${error.message}`);
+    }
+    throw new Error("Error in API request: Unknown error");
   }
 };
 
 export const fetchEvaluatedCompanies = async (): Promise<Company[]> => {
   const apiUrl = "http://localhost:8000/api/main/companies";
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);
 
   try {
-    const response = await fetch(apiUrl);
+    const response = await fetch(apiUrl, { signal: controller.signal });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch companies: ${response.statusText}`);
+      const errorBody = await response.json().catch(() => ({}));
+      const errorMessage = errorBody?.message || response.statusText || "Unknown server error";
+
+      throw new Error(errorMessage);
     }
 
     return await response.json();
-  } catch (error) {
-    throw error;
+  } catch (error: unknown) {
+    clearTimeout(timeoutId);
+
+    if (isError(error) && error.name === "AbortError") {
+      throw new Error("Request timed out. The server took too long to respond.");
+    }
+
+    if (isError(error)) {
+      throw new Error(`Error fetching evaluated companies: ${error.message}`);
+    }
+
+    throw new Error("Error fetching evaluated companies: Unknown error");
   }
 };
