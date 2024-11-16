@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { postCompanySearch } from "../services/apiService";
 
 const useLogMessage = (
   inputValue: string,
@@ -13,8 +12,6 @@ const useLogMessage = (
   const logMessage = async () => {
     if (inputValue.trim() !== "") {
       try {
-        const result = await postCompanySearch(inputValue);
-        console.log("Received from backend:", result);
       } catch (error) {
         handleError("Error during company search", error);
       } finally {
@@ -24,8 +21,6 @@ const useLogMessage = (
   };
 
   const handleError = (contextMessage: string, error: unknown) => {
-    console.error(`${contextMessage}:`, error);
-
     const errorMessage =
       error instanceof Error
         ? `${contextMessage}: ${error.message}`

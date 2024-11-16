@@ -42,7 +42,6 @@ export const fetchEvaluatedCompanies = async (): Promise<Company[]> => {
 
     return await response.json();
   } catch (error) {
-    console.error("Error fetching evaluated companies:", error);
     throw error;
   }
 };
