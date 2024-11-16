@@ -25,9 +25,8 @@ export const postCompanySearch = async (
     }
 
     return await response.json();
-  } catch (error) {
-    console.error("Error in API request:", error);
-    throw error;
+  } catch (error: unknown) {
+    throw new Error(`Error in API request: ${error instanceof Error ? error.message : "Unknown error"}`);
   }
 };
 
@@ -38,7 +37,7 @@ export const fetchEvaluatedCompanies = async (): Promise<Company[]> => {
     const response = await fetch(apiUrl);
 
     if (!response.ok) {
-      throw new Error("Failed to fetch companies");
+      throw new Error(`Failed to fetch companies: ${response.statusText}`);
     }
 
     return await response.json();

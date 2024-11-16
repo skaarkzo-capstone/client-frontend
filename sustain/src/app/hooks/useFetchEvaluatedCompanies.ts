@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { fetchEvaluatedCompanies } from "../services/apiService";
-import useLogMessage from "./useLogMessage";
 
 type Company = {
   id: string;
@@ -10,8 +9,7 @@ type Company = {
   reasoning: string;
 };
 
-const useFetchEvaluatedCompanies = () => {
-  const { handleError } = useLogMessage("", () => {});
+const useFetchEvaluatedCompanies = (handleError: (context: string, error: unknown) => void) => {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -28,7 +26,7 @@ const useFetchEvaluatedCompanies = () => {
     };
 
     loadCompanies();
-  }, []);
+  }, [handleError]);
 
   return { companies, isLoading };
 };

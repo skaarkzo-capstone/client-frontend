@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Snackbar, Alert } from "@mui/material";
 import { FaSearch, FaArrowUp } from "react-icons/fa";
 import useEvaluateCompanySearch from "./hooks/useEvaluateCompanySearch";
 import CompanyCard from "./components/CompanyCard";
@@ -8,9 +9,9 @@ import useFetchEvaluatedCompanies from "./hooks/useFetchEvaluatedCompanies";
 import { formatDate } from "./hooks/utils/formatDate";
 
 export default function Home() {
-  const { inputValue, handleInputChange, logMessage } =
+  const { inputValue, handleInputChange, logMessage, snackbar, closeSnackbar, handleError } =
     useEvaluateCompanySearch();
-  const { companies, isLoading } = useFetchEvaluatedCompanies();
+  const { companies, isLoading } = useFetchEvaluatedCompanies(handleError);
 
   return (
     <div
@@ -55,7 +56,7 @@ export default function Home() {
             </button>
           </div>
         </div>
-
+        
         <h2 className="text-[48px] font-semibold mb-8">Evaluated Companies</h2>
 
         {isLoading ? (
@@ -87,6 +88,17 @@ export default function Home() {
           </>
         )}
       </div>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={closeSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert onClose={closeSnackbar} severity="error" sx={{ width: "100%" }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
