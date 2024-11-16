@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { FaSearch, FaArrowUp } from "react-icons/fa";
-import evaluateCompanySearch from "./hooks/EvaluateCompanySearch";
+import useEvaluateCompanySearch from "./hooks/useEvaluateCompanySearch";
 import CompanyCard from "./components/CompanyCard";
-import CompanyData from "./hooks/CompanyData";
+import CompanyData from "./data/CompanyData";
 
 export default function Home() {
-  const { inputValue, handleInputChange, logMessage } = evaluateCompanySearch();
+  const { inputValue, handleInputChange, logMessage } =
+    useEvaluateCompanySearch();
 
   return (
     <div
