@@ -10,14 +10,18 @@ const useLogMessage = (
         const result = await postCompanySearch(inputValue);
         console.log("Received from backend:", result);
       } catch (error) {
-        console.error("Error during logMessage execution:", error);
+        handleError("Error during logMessage execution", error);
       } finally {
         setInputValue("");
       }
     }
   };
 
-  return { logMessage };
+  const handleError = (contextMessage: string, error: unknown) => {
+    console.error(`${contextMessage}:`, error);
+  };
+
+  return { logMessage, handleError };
 };
 
 export default useLogMessage;
