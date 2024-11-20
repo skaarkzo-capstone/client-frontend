@@ -85,11 +85,11 @@ export default function Home() {
           <p className="text-white">Loading...</p>
         ) : (
           <div>
-            <div className="flex items-center py-6 px-4 w-[723px] h-[57px] mb-4">
+            <div className="flex items-center py-6 px-4 w-[823px] h-[57px] mb-4">
               <span className="text-white text-[24px] w-[250px]">
                 Company Name
               </span>
-              <span className="text-white text-[24px] w-[200px] text-center">
+              <span className="text-white text-[24px] mx-auto w-[200px] text-center">
                 Evaluation Date
               </span>
               <span className="text-white text-[24px] ml-auto">Score</span>
