@@ -7,11 +7,22 @@ import useEvaluateCompanySearch from "./hooks/useEvaluateCompanySearch";
 import CompanyCard from "./components/CompanyCard";
 import useFetchEvaluatedCompanies from "./hooks/useFetchEvaluatedCompanies";
 import { formatDate } from "./hooks/utils/formatDate";
+import useCompanyFilter from "./hooks/useCompanyFilter";
 
 export default function Home() {
-  const { inputValue, handleInputChange, logMessage, snackbar, closeSnackbar, handleError } =
-    useEvaluateCompanySearch();
+  const {
+    inputValue,
+    handleInputChange,
+    logMessage,
+    snackbar,
+    closeSnackbar,
+    handleError,
+  } = useEvaluateCompanySearch();
+
   const { companies, isLoading } = useFetchEvaluatedCompanies(handleError);
+
+  const { searchQuery, handleSearchChange, filteredData } =
+    useCompanyFilter(companies);
 
   return (
     <div
@@ -56,8 +67,20 @@ export default function Home() {
             </button>
           </div>
         </div>
-        
+
         <h2 className="text-[48px] mb-8">Evaluated Companies</h2>
+
+        <div className="relative mt-4 mb-20">
+          <div className="flex items-center w-[400px] bg-[rgb(54,54,54)] border-[rgb(118,118,118)] border rounded-full py-2 px-4">
+            <input
+              type="text"
+              placeholder="Search evaluated database"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="flex-grow bg-transparent text-white placeholder-white outline-none hover:opacity-70"
+            />
+          </div>
+        </div>
 
         {isLoading ? (
           <p className="text-white">Loading...</p>
@@ -72,19 +95,21 @@ export default function Home() {
                 Evaluation Date
               </span>
 
-              <span className="text-white text-[24px] ml-auto">
-                Score
-              </span>
+              <span className="text-white text-[24px] ml-auto">Score</span>
             </div>
 
-            {companies.map((company) => (
-              <CompanyCard
-                key={company.id}
-                name={company.name}
-                date={formatDate(company.date)}
-                score={company.score}
-              />
-            ))}
+            {filteredData.length > 0 ? (
+              filteredData.map((company) => (
+                <CompanyCard
+                  key={company.id}
+                  name={company.name}
+                  date={formatDate(company.date)}
+                  score={company.score}
+                />
+              ))
+            ) : (
+              <p className="text-white mt-4">No companies found</p>
+            )}
           </>
         )}
       </div>
