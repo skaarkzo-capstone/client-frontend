@@ -100,7 +100,7 @@ export default function Home() {
                 <CompanyCard key={company.id} company={company} />
               ))
             ) : (
-              <p className="text-white mt-4">No companies found</p>
+              <p className="text-white text-center mt-6">No companies found</p>
             )}
           </div>
         )}
