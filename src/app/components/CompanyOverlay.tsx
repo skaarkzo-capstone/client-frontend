@@ -35,6 +35,13 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({
         className="bg-[rgb(37,37,37)] text-white p-8 pt-12 pl-16 rounded-[20px] relative shadow-2xl"
         style={{ width: "70vw", height: "70vh" }}
       >
+        <button
+          onClick={onClose}
+          className="absolute top-0 right-4 text-[40px] text-white hover:opacity-70"
+        >
+          &times;
+        </button>
+
         <div className="absolute right-20 top-20 flex items-center justify-center text-white border rounded-[10px] text-[20px] w-[67px] h-[33px] border-[rgb(118,118,118)]">
           {company.score}
         </div>
