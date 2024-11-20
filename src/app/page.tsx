@@ -8,6 +8,8 @@ import CompanyCard from "./components/CompanyCard";
 import useFetchEvaluatedCompanies from "./hooks/useFetchEvaluatedCompanies";
 import { formatDate } from "./hooks/utils/formatDate";
 import useCompanyFilter from "./hooks/useCompanyFilter";
+import CompanyOverlay from "./components/CompanyOverlay";
+import { useState } from "react";
 
 export default function Home() {
   const {
@@ -23,6 +25,18 @@ export default function Home() {
 
   const { searchQuery, handleSearchChange, filteredData } =
     useCompanyFilter(companies);
+
+  const [selectedCompany, setSelectedCompany] = useState<
+    null | (typeof companies)[0]
+  >(null);
+
+  const handleCardClick = (company: (typeof companies)[0]) => {
+    setSelectedCompany(company);
+  };
+
+  const closeOverlay = () => {
+    setSelectedCompany(null);
+  };
 
   return (
     <div
@@ -105,6 +119,7 @@ export default function Home() {
                   name={company.name}
                   date={formatDate(company.date)}
                   score={company.score}
+                  onClick={() => handleCardClick(company)}
                 />
               ))
             ) : (
@@ -113,6 +128,10 @@ export default function Home() {
           </>
         )}
       </div>
+
+      {selectedCompany && (
+        <CompanyOverlay company={selectedCompany} onClose={closeOverlay} />
+      )}
 
       <Snackbar
         open={snackbar.open}
