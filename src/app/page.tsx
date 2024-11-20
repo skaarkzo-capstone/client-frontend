@@ -6,10 +6,7 @@ import { FaSearch, FaArrowUp } from "react-icons/fa";
 import useEvaluateCompanySearch from "./hooks/useEvaluateCompanySearch";
 import CompanyCard from "./components/CompanyCard";
 import useFetchEvaluatedCompanies from "./hooks/useFetchEvaluatedCompanies";
-import { formatDate } from "./hooks/utils/formatDate";
 import useCompanyFilter from "./hooks/useCompanyFilter";
-import CompanyOverlay from "./components/CompanyOverlay";
-import { useState } from "react";
 
 export default function Home() {
   const {
@@ -25,18 +22,6 @@ export default function Home() {
 
   const { searchQuery, handleSearchChange, filteredData } =
     useCompanyFilter(companies);
-
-  const [selectedCompany, setSelectedCompany] = useState<
-    null | (typeof companies)[0]
-  >(null);
-
-  const handleCardClick = (company: (typeof companies)[0]) => {
-    setSelectedCompany(company);
-  };
-
-  const closeOverlay = () => {
-    setSelectedCompany(null);
-  };
 
   return (
     <div
@@ -99,39 +84,27 @@ export default function Home() {
         {isLoading ? (
           <p className="text-white">Loading...</p>
         ) : (
-          <>
+          <div>
             <div className="flex items-center py-6 px-4 w-[723px] h-[57px] mb-4">
               <span className="text-white text-[24px] w-[250px]">
                 Company Name
               </span>
-
               <span className="text-white text-[24px] w-[200px] text-center">
                 Evaluation Date
               </span>
-
               <span className="text-white text-[24px] ml-auto">Score</span>
             </div>
 
             {filteredData.length > 0 ? (
               filteredData.map((company) => (
-                <CompanyCard
-                  key={company.id}
-                  name={company.name}
-                  date={formatDate(company.date)}
-                  score={company.score}
-                  onClick={() => handleCardClick(company)}
-                />
+                <CompanyCard key={company.id} company={company} />
               ))
             ) : (
               <p className="text-white mt-4">No companies found</p>
             )}
-          </>
+          </div>
         )}
       </div>
-
-      {selectedCompany && (
-        <CompanyOverlay company={selectedCompany} onClose={closeOverlay} />
-      )}
 
       <Snackbar
         open={snackbar.open}

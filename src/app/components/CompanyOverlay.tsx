@@ -1,4 +1,9 @@
-import React, { useRef } from "react";
+import React from "react";
+import {
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 type Company = {
   id: string;
@@ -10,47 +15,26 @@ type Company = {
 
 interface CompanyOverlayProps {
   company: Company;
-  onClose: () => void;
 }
 
-const CompanyOverlay: React.FC<CompanyOverlayProps> = ({
-  company,
-  onClose,
-}) => {
-  const overlayRef = useRef<HTMLDivElement>(null);
-
-  const handleOutsideClick = (e: React.MouseEvent) => {
-    if (overlayRef.current && !overlayRef.current.contains(e.target as Node)) {
-      onClose();
-    }
-  };
-
+const CompanyOverlay: React.FC<CompanyOverlayProps> = ({ company }) => {
   return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-      onClick={handleOutsideClick}
-    >
-      <div
-        ref={overlayRef}
-        className="bg-[rgb(37,37,37)] text-white p-8 pt-12 pl-16 rounded-[20px] relative shadow-2xl"
-        style={{ width: "70vw", height: "70vh" }}
-      >
-        <button
-          onClick={onClose}
-          className="absolute top-0 right-4 text-[40px] text-white hover:opacity-70"
-        >
-          &times;
-        </button>
+    <DialogContent className="bg-[rgb(37,37,37)] text-white p-8 pt-12 pl-16 rounded-[20px] border-none sm:max-w-[70vw] h-[70vh] flex flex-col items-start justify-start">
+      <div className="absolute right-20 flex items-center justify-center text-white border rounded-[10px] text-[30px] w-[90px] h-[50px] border-[rgb(118,118,118)]">
+        {company.score}
+      </div>
 
-        <div className="absolute right-20 top-20 flex items-center justify-center text-white border rounded-[10px] text-[20px] w-[67px] h-[33px] border-[rgb(118,118,118)]">
-          {company.score}
-        </div>
+      <DialogHeader>
+        <DialogTitle className="text-[60px] font-bold mb-4">
+          {company.name}
+        </DialogTitle>
+      </DialogHeader>
 
-        <h2 className="text-[60px] font-bold mb-4">{company.name}</h2>
-        <p className="text-[43px] mb-2">Reasoning</p>
+      <div className="mt-20">
+        <p className="text-[43px] font-semibold mb-2">Reasoning</p>
         <p className="text-[24px]">{company.reasoning}</p>
       </div>
-    </div>
+    </DialogContent>
   );
 };
 
