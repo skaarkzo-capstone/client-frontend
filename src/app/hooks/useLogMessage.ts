@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { postCompanySearch } from "../services/apiService";
 
 const useLogMessage = (
   inputValue: string,
@@ -12,6 +13,12 @@ const useLogMessage = (
   const logMessage = async () => {
     if (inputValue.trim() !== "") {
       try {
+        const results = await postCompanySearch(inputValue);
+        console.log("Search results:", results);
+        setSnackbar({
+          open: true,
+          message: `Successfully fetched ${results.length} companies.`,
+        });
       } catch (error) {
         handleError("Error during company search", error);
       } finally {
@@ -23,9 +30,15 @@ const useLogMessage = (
   const handleError = (contextMessage: string, error: unknown) => {
     let errorMessage = `${contextMessage}: An unknown error occurred`;
 
-    if (error instanceof TypeError && error.message.includes("Failed to fetch")) {
+    if (
+      error instanceof TypeError &&
+      error.message.includes("Failed to fetch")
+    ) {
       errorMessage = "Backend is not responding. Please try again later.";
-    } else if (error instanceof Error && error.message.includes("Request timed out")) {
+    } else if (
+      error instanceof Error &&
+      error.message.includes("Request timed out")
+    ) {
       errorMessage = "The database is not responding. Please try again later.";
     } else if (
       error instanceof Error &&

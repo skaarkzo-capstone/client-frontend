@@ -49,7 +49,8 @@ export const fetchEvaluatedCompanies = async (): Promise<Company[]> => {
 
     if (!response.ok) {
       const errorBody = await response.json().catch(() => ({}));
-      const errorMessage = errorBody?.message || response.statusText || "Unknown server error";
+      const errorMessage =
+        errorBody?.message || response.statusText || "Unknown server error";
 
       throw new Error(errorMessage);
     }
@@ -59,7 +60,9 @@ export const fetchEvaluatedCompanies = async (): Promise<Company[]> => {
     clearTimeout(timeoutId);
 
     if (isError(error) && error.name === "AbortError") {
-      throw new Error("Request timed out. The server took too long to respond.");
+      throw new Error(
+        "Request timed out. The server took too long to respond."
+      );
     }
 
     if (isError(error)) {
