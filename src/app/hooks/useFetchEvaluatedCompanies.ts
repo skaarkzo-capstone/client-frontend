@@ -18,7 +18,7 @@ const useFetchEvaluatedCompanies = (handleError: (context: string, error: unknow
       const data = await fetchEvaluatedCompanies();
       setCompanies(data);
     } catch (error) {
-      handleError("Backend is not responding. Please try again later", error);
+      handleError("Trouble reaching backend. Please try again later", error);
     } finally {
       setIsLoading(false);
     }
