@@ -13,7 +13,7 @@ const isError = (error: unknown): error is Error => {
 };
 
 export const postCompanySearch = async (
-  companyName: string
+  company_name: string
 ): Promise<Company[]> => {
   const apiUrl = API_ENDPOINTS.POST_COMPANY_SEARCH;
 
@@ -24,7 +24,7 @@ export const postCompanySearch = async (
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        company_name: companyName,
+        company_name: company_name,
         website: true,
         sedar: true
       }),
