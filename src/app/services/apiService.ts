@@ -13,7 +13,7 @@ const isError = (error: unknown): error is Error => {
 export const postCompanySearch = async (
   companyName: string
 ): Promise<Company[]> => {
-  const apiUrl = "http://localhost:8000/api/main/search/";
+  const apiUrl = "http://localhost:8000/api/main/company";
 
   try {
     const response = await fetch(apiUrl, {
@@ -21,7 +21,11 @@ export const postCompanySearch = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ companyName }),
+      body: JSON.stringify({
+        company_name: companyName,
+        website: true,
+        sedar: true
+      }),
     });
 
     if (!response.ok) {

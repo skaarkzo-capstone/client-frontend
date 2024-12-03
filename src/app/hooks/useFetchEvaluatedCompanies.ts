@@ -13,20 +13,20 @@ const useFetchEvaluatedCompanies = (handleError: (context: string, error: unknow
   const [companies, setCompanies] = useState<Company[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const loadCompanies = async () => {
-      try {
-        const data = await fetchEvaluatedCompanies();
-        setCompanies(data);
-      } catch (error) {
-        handleError("Backend is not responding. Please try again later", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const loadCompanies = async () => {
+    try {
+      const data = await fetchEvaluatedCompanies();
+      setCompanies(data);
+    } catch (error) {
+      handleError("Backend is not responding. Please try again later", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     loadCompanies();
-  }, [handleError]);
+  }, []);
 
   return { companies, isLoading };
 };
