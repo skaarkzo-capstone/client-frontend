@@ -1,3 +1,5 @@
+import {API_ENDPOINTS} from "@/app/hooks/utils/apiConfigs";
+
 type Company = {
   id: string;
   name: string;
@@ -11,9 +13,9 @@ const isError = (error: unknown): error is Error => {
 };
 
 export const postCompanySearch = async (
-  companyName: string
+  company_name: string
 ): Promise<Company[]> => {
-  const apiUrl = "http://localhost:8000/api/main/search/";
+  const apiUrl = API_ENDPOINTS.POST_COMPANY_SEARCH;
 
   try {
     const response = await fetch(apiUrl, {
@@ -21,7 +23,11 @@ export const postCompanySearch = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ companyName }),
+      body: JSON.stringify({
+        company_name: company_name,
+        website: true,
+        sedar: true
+      }),
     });
 
     if (!response.ok) {
@@ -38,7 +44,7 @@ export const postCompanySearch = async (
 };
 
 export const fetchEvaluatedCompanies = async (): Promise<Company[]> => {
-  const apiUrl = "http://localhost:8000/api/main/companies";
+  const apiUrl = API_ENDPOINTS.FETCH_COMPANY_DATA;
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 5000);
 
