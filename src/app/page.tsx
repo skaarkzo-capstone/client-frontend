@@ -6,7 +6,7 @@ import Header from "./components/Header";
 import SustainTitle from "./components/SustainTitle";
 import EvaluateCompany from "./components/EvaluateCompany";
 import EvaluatedCompanies from "./components/EvaluatedCompanies";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [snackbar, setSnackbar] = useState({
@@ -14,6 +14,11 @@ export default function Home() {
     message: "",
   });
   const [refresh, setRefresh] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   const showSnackbar = (message: string) => {
     setSnackbar({ open: true, message });
@@ -26,6 +31,10 @@ export default function Home() {
   const triggerRefresh = () => {
     setRefresh((prev) => !prev);
   };
+
+  if (!isHydrated) {
+    return null;
+  }
 
   return (
     <div
