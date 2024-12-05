@@ -50,8 +50,11 @@ export default function EvaluatedCompanies({
           </div>
 
           {filteredData.length > 0 ? (
-            filteredData.map((company) => (
-              <CompanyCard key={company.id} company={company} />
+            filteredData.map((company, index) => (
+              <CompanyCard
+                key={company.id || `${company.name}-${index}`}
+                company={company}
+              />
             ))
           ) : (
             <p className="text-white text-center mt-6">No companies found</p>
