@@ -4,10 +4,12 @@ import { useState } from "react";
 
 interface EvaluateCompanyProps {
   showSnackbar: (message: string) => void;
+  triggerRefresh: () => void;
 }
 
 export default function EvaluateCompany({
   showSnackbar,
+  triggerRefresh,
 }: EvaluateCompanyProps) {
   const { inputValue, handleInputChange, logMessage } =
     useEvaluateCompanySearch();
@@ -21,6 +23,7 @@ export default function EvaluateCompany({
     setIsButtonDisabled(true);
     try {
       await logMessage();
+      triggerRefresh();
     } catch (error) {
       showSnackbar("An error occurred. Please try again.");
     } finally {

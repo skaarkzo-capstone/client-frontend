@@ -4,10 +4,12 @@ import CompanyCard from "./CompanyCard";
 
 interface EvaluatedCompaniesProps {
   showSnackbar: (message: string) => void;
+  refresh: boolean;
 }
 
 export default function EvaluatedCompanies({
   showSnackbar,
+  refresh,
 }: EvaluatedCompaniesProps) {
   const handleError = (context: string, error: unknown) => {
     const errorMessage =
@@ -15,7 +17,10 @@ export default function EvaluatedCompanies({
     showSnackbar(`Error in ${context}: ${errorMessage}`);
   };
 
-  const { companies, isLoading } = useFetchEvaluatedCompanies(handleError);
+  const { companies, isLoading } = useFetchEvaluatedCompanies(
+    handleError,
+    refresh
+  );
   const { searchQuery, handleSearchChange, filteredData } =
     useCompanyFilter(companies);
 
@@ -50,8 +55,11 @@ export default function EvaluatedCompanies({
           </div>
 
           {filteredData.length > 0 ? (
-            filteredData.map((company) => (
-              <CompanyCard key={company.id} company={company} />
+            filteredData.map((company, index) => (
+              <CompanyCard
+                key={company.id || `${company.name}-${index}`}
+                company={company}
+              />
             ))
           ) : (
             <p className="text-white text-center mt-6">No companies found</p>
