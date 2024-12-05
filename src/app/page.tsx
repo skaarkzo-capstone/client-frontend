@@ -24,16 +24,20 @@ export default function Home() {
 
   return (
     <div
-      className="flex flex-col items-center p-8 pb-40 sm:p-20"
+      className="flex flex-col items-center p-8 pb-40 sm:p-20 relative"
       style={{ backgroundColor: "rgb(37, 37, 37)", minHeight: "100vh" }}
     >
       <Header />
 
-      <div className="flex flex-col items-center text-white mt-20">
+      <div className="flex flex-col items-center text-white mt-20 flex-grow">
         <SustainTitle />
         <EvaluateCompany showSnackbar={showSnackbar} />
         <EvaluatedCompanies showSnackbar={showSnackbar} />
       </div>
+
+      <footer className="absolute bottom-0 left-0 w-full text-center py-4 bg-[rgb(37,37,37)] text-white">
+        <p>&copy; Royal Bank of Canada - 2024</p>
+      </footer>
 
       <Snackbar
         open={snackbar.open}
