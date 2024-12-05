@@ -13,6 +13,7 @@ export default function Home() {
     open: false,
     message: "",
   });
+  const [refresh, setRefresh] = useState(false);
 
   const showSnackbar = (message: string) => {
     setSnackbar({ open: true, message });
@@ -20,6 +21,10 @@ export default function Home() {
 
   const closeSnackbar = () => {
     setSnackbar({ ...snackbar, open: false });
+  };
+
+  const triggerRefresh = () => {
+    setRefresh((prev) => !prev);
   };
 
   return (
@@ -31,8 +36,11 @@ export default function Home() {
 
       <div className="flex flex-col items-center text-white mt-20 flex-grow">
         <SustainTitle />
-        <EvaluateCompany showSnackbar={showSnackbar} />
-        <EvaluatedCompanies showSnackbar={showSnackbar} />
+        <EvaluateCompany
+          showSnackbar={showSnackbar}
+          triggerRefresh={triggerRefresh}
+        />
+        <EvaluatedCompanies showSnackbar={showSnackbar} refresh={refresh} />
       </div>
 
       <footer className="absolute bottom-0 left-0 w-full text-center py-4 bg-[rgb(37,37,37)] text-white">

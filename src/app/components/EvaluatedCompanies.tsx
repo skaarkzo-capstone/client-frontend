@@ -4,10 +4,12 @@ import CompanyCard from "./CompanyCard";
 
 interface EvaluatedCompaniesProps {
   showSnackbar: (message: string) => void;
+  refresh: boolean;
 }
 
 export default function EvaluatedCompanies({
   showSnackbar,
+  refresh,
 }: EvaluatedCompaniesProps) {
   const handleError = (context: string, error: unknown) => {
     const errorMessage =
@@ -15,7 +17,10 @@ export default function EvaluatedCompanies({
     showSnackbar(`Error in ${context}: ${errorMessage}`);
   };
 
-  const { companies, isLoading } = useFetchEvaluatedCompanies(handleError);
+  const { companies, isLoading } = useFetchEvaluatedCompanies(
+    handleError,
+    refresh
+  );
   const { searchQuery, handleSearchChange, filteredData } =
     useCompanyFilter(companies);
 
