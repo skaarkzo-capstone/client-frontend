@@ -25,14 +25,14 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({ company }) => {
       </div>
 
       <DialogHeader>
-        <DialogTitle className="text-[60px] font-bold">
+        <DialogTitle className="text-[60px] font-medium">
           {company.name}
         </DialogTitle>
         <hr className="border-white-300 w-[65vw]" />
       </DialogHeader>
 
       <div className="mt-[130] items-center justify-center w-full overflow-y-auto overflow-x-hidden">
-        <p className="text-[43px] font-semibold mb-2">Reasoning</p>
+        <p className="text-[43px] mb-2">Reasoning</p>
         {company.reasoning && Object.entries(company.reasoning).length > 0 ? (
           <div className="text-[24px] mt-5">
             {Object.entries(company.reasoning).map(([key, value]) => (
@@ -50,7 +50,7 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({ company }) => {
       <img
         src="screenshots/footer.webp"
         alt="Footer Image"
-        className="mx-auto mt-auto w-auto h-auto"
+        className="mx-auto mt-auto w-[400px] h-auto mr-0"
       />
     </DialogContent>
   );
