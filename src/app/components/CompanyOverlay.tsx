@@ -49,7 +49,7 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({ company }) => {
 
       <img
         src="screenshots/footer.webp"
-        alt="Footer Image"
+        alt="Sustain Engine"
         className="mx-auto mt-auto w-[400px] h-auto mr-0"
       />
     </DialogContent>
