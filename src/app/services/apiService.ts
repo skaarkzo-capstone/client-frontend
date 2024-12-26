@@ -1,12 +1,4 @@
-import {API_ENDPOINTS} from "@/app/hooks/utils/apiConfigs";
-
-type Company = {
-  id: string;
-  name: string;
-  date: string;
-  score: number;
-  reasoning: string;
-};
+import { API_ENDPOINTS } from "@/app/hooks/utils/apiConfigs";
 
 const isError = (error: unknown): error is Error => {
   return typeof error === "object" && error !== null && "message" in error;
@@ -26,7 +18,7 @@ export const postCompanySearch = async (
       body: JSON.stringify({
         company_name: company_name,
         website: true,
-        sedar: true
+        sedar: true,
       }),
     });
 
