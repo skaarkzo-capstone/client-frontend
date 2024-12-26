@@ -5,14 +5,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-type Company = {
-  id: string;
-  name: string;
-  date: string;
-  score: number;
-  reasoning: Record<string, string>;
-};
-
 interface CompanyOverlayProps {
   company: Company;
 }
@@ -20,7 +12,9 @@ interface CompanyOverlayProps {
 const CompanyOverlay: React.FC<CompanyOverlayProps> = ({ company }) => {
   return (
     <DialogContent className="bg-[rgb(37,37,37)] text-white p-8 pt-12 pl-16 rounded-[20px] border-none sm:max-w-[70vw] h-[70vh] flex flex-col items-start justify-start">
-      <div className="absolute right-[65px] top-[75px] flex items-center justify-center text-white border rounded-[10px] text-[30px] w-[90px] h-[50px] border-[rgb(118,118,118)] mr-0">
+      <div
+        className={`absolute right-[65px] top-[75px] flex items-center justify-center text-white border-${company.color} rounded-[10px] text-[30px] w-[90px] h-[50px] bg-${company.color} mr-0`}
+      >
         {company.score}
       </div>
 
