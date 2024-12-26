@@ -1,21 +1,15 @@
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { formatDate } from "../hooks/utils/formatDate";
 import CompanyOverlay from "./CompanyOverlay";
+import { getColor } from "../hooks/utils/getColor";
+import clsx from "clsx";
 
 type CompanyProps = {
   company: Company;
 };
 
 export default function CompanyCard({ company }: CompanyProps) {
-  if (company.score >= 0 && company.score <= 4) {
-    company.color = "red-500";
-  } else if (company.score >= 5 && company.score <= 7) {
-    company.color = "yellow-500";
-  } else if (company.score >= 8 && company.score <= 10) {
-    company.color = "green-500";
-  } else {
-    company.color = "grey-500";
-  }
+  const { bg, border } = getColor(company.score);
 
   return (
     <Dialog>
@@ -27,7 +21,11 @@ export default function CompanyCard({ company }: CompanyProps) {
           {formatDate(company.date)}
         </span>
         <span
-          className={`text-white text-[20px] w-[67px] h-[33px] ml-auto border-${company.color} rounded-[10px] text-center bg-${company.color}`}
+          className={clsx(
+            "text-white text-[20px] w-[67px] h-[33px] ml-auto rounded-[10px] text-center",
+            bg,
+            border
+          )}
         >
           {company.score}
         </span>
