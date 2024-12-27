@@ -70,3 +70,33 @@ export const fetchEvaluatedCompanies = async (): Promise<Company[]> => {
     throw new Error("Error fetching evaluated companies: Unknown error");
   }
 };
+
+export const deleteCompany = async (
+  company_name: string
+): Promise<{ message: string }> => {
+  const apiUrl = `${API_ENDPOINTS.DELETE_COMPANY}`;
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        company_name,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || "Failed to delete the company");
+    }
+
+    return await response.json();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(`Error in API request: ${error.message}`);
+    }
+    throw new Error("Error in API request: Unknown error");
+  }
+};
