@@ -14,15 +14,31 @@ export default function EvaluateCompany({
   const { inputValue, handleInputChange, logMessage } =
     useEvaluateCompanySearch();
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [checkboxes, setCheckboxes] = useState({
+    website: false,
+    sedar: false,
+    news: false,
+  });
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = event.target;
+    setCheckboxes((prev) => ({ ...prev, [name]: checked }));
+  };
 
   const handleLogMessage = async () => {
     if (!inputValue.trim()) {
       showSnackbar("Company name cannot be empty. Please enter a valid name.");
       return;
     }
+
+    if (!Object.values(checkboxes).some((value) => value)) {
+      showSnackbar("You must select at least one checkbox.");
+      return;
+    }
+
     setIsButtonDisabled(true);
     try {
-      await logMessage();
+      await logMessage(inputValue, checkboxes);
       triggerRefresh();
     } catch (error) {
       showSnackbar("An error occurred. Please try again.");
@@ -57,6 +73,39 @@ export default function EvaluateCompany({
             <FaArrowUp className="text-white" />
           </div>
         </button>
+      </div>
+
+      <div className="flex justify-center mt-4 space-x-6">
+        <label className="flex items-center text-white">
+          <input
+            type="checkbox"
+            name="website"
+            checked={checkboxes.website}
+            onChange={handleCheckboxChange}
+            className="mr-2"
+          />
+          Website
+        </label>
+        <label className="flex items-center text-white">
+          <input
+            type="checkbox"
+            name="sedar"
+            checked={checkboxes.sedar}
+            onChange={handleCheckboxChange}
+            className="mr-2"
+          />
+          Sedar
+        </label>
+        <label className="flex items-center text-white">
+          <input
+            type="checkbox"
+            name="news"
+            checked={checkboxes.news}
+            onChange={handleCheckboxChange}
+            className="mr-2"
+          />
+          News
+        </label>
       </div>
     </div>
   );
