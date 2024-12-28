@@ -71,10 +71,10 @@ export const fetchEvaluatedCompanies = async (): Promise<Company[]> => {
   }
 };
 
-export const deleteCompany = async (
-  company_name: string
-): Promise<{ message: string }> => {
-  const apiUrl = `${API_ENDPOINTS.DELETE_COMPANY}`;
+export const deleteMultipleCompanies = async (
+  company_names: string[]
+): Promise<{ message: string; success: string[]; failed: string[] }> => {
+  const apiUrl = `${API_ENDPOINTS.DELETE_COMPANIES}`;
 
   try {
     const response = await fetch(apiUrl, {
@@ -82,14 +82,14 @@ export const deleteCompany = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        company_name,
-      }),
+      body: JSON.stringify(
+        company_names.map((company_name) => ({ company_name }))
+      ),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.detail || "Failed to delete the company");
+      throw new Error(errorData.detail.message || "Failed to delete companies");
     }
 
     return await response.json();
