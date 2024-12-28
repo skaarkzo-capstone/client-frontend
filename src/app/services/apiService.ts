@@ -5,7 +5,8 @@ const isError = (error: unknown): error is Error => {
 };
 
 export const postCompanySearch = async (
-  company_name: string
+  company_name: string,
+  checkboxes: { website: boolean; sedar: boolean; news: boolean }
 ): Promise<Company[]> => {
   const apiUrl = API_ENDPOINTS.POST_COMPANY_SEARCH;
 
@@ -16,9 +17,8 @@ export const postCompanySearch = async (
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        company_name: company_name,
-        website: true,
-        sedar: true,
+        company_name,
+        ...checkboxes,
       }),
     });
 
@@ -28,7 +28,7 @@ export const postCompanySearch = async (
 
     return await response.json();
   } catch (error: unknown) {
-    if (isError(error)) {
+    if (error instanceof Error) {
       throw new Error(`Error in API request: ${error.message}`);
     }
     throw new Error("Error in API request: Unknown error");
