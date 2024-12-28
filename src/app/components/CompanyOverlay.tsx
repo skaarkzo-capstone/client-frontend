@@ -7,14 +7,30 @@ import {
 import { getScoreColor } from "../hooks/utils/getScoreColor";
 import CompanyScore from "./CompanyScore";
 import { getScoreDescription } from "../hooks/utils/getScoreDescription";
+import useDeleteCompanies from "../hooks/useDeleteCompanies";
 
 interface CompanyOverlayProps {
   company: Company;
+  showSnackbar: (message: string) => void;
+  onClose: () => void;
+  refreshData: () => void;
 }
 
-const CompanyOverlay: React.FC<CompanyOverlayProps> = ({ company }) => {
+const CompanyOverlay: React.FC<CompanyOverlayProps> = ({
+  company,
+  showSnackbar,
+  onClose,
+  refreshData,
+}) => {
   const { bg, border } = getScoreColor(company.score);
   const { title, description } = getScoreDescription(company.score);
+  const { handleDeleteMultipleCompanies } = useDeleteCompanies(showSnackbar);
+
+  const handleDelete = async () => {
+    await handleDeleteMultipleCompanies([company.name]);
+    refreshData();
+    onClose();
+  };
 
   return (
     <DialogContent
@@ -33,6 +49,12 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({ company }) => {
           width="90px"
           height="50px"
         />
+        <button
+          onClick={handleDelete}
+          className="ml-4 bg-red-600 text-white text-[14px] py-2 px-4 rounded-lg hover:bg-red-700 transition"
+        >
+          Delete
+        </button>
       </div>
 
       <DialogHeader>
@@ -42,7 +64,7 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({ company }) => {
         <hr className="border-white-300 w-[65vw]" />
       </DialogHeader>
 
-      <div className="mt-[130] items-center justify-center w-full overflow-y-auto overflow-x-hidden">
+      <div className="mt-[130px] items-center justify-center w-full overflow-y-auto overflow-x-hidden">
         <p className="text-[43px] mb-2">Reasoning</p>
         {company.reasoning && Object.entries(company.reasoning).length > 0 ? (
           <div className="text-[24px] mt-5">

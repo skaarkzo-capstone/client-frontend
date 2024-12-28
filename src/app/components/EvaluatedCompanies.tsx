@@ -1,5 +1,7 @@
+import React, { useState } from "react";
 import useFetchEvaluatedCompanies from "../hooks/useFetchEvaluatedCompanies";
 import useCompanyFilter from "../hooks/useCompanyFilter";
+import useDeleteCompanies from "../hooks/useDeleteCompanies";
 import CompanyCard from "./CompanyCard";
 
 interface EvaluatedCompaniesProps {
@@ -11,6 +13,10 @@ export default function EvaluatedCompanies({
   showSnackbar,
   refresh,
 }: EvaluatedCompaniesProps) {
+  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
+  const [refreshState, setRefreshState] = useState<boolean>(false);
+  const refreshData = () => setRefreshState(!refreshState);
+
   const handleError = (context: string, error: unknown) => {
     const errorMessage =
       error instanceof Error ? error.message : "An unknown error occurred.";
@@ -19,16 +25,36 @@ export default function EvaluatedCompanies({
 
   const { companies, isLoading } = useFetchEvaluatedCompanies(
     handleError,
-    refresh
+    refresh || refreshState
   );
   const { searchQuery, handleSearchChange, filteredData } =
     useCompanyFilter(companies);
+  const { handleDeleteMultipleCompanies } = useDeleteCompanies(showSnackbar);
+
+  const toggleSelection = (companyName: string) => {
+    setSelectedCompanies((prevSelected) =>
+      prevSelected.includes(companyName)
+        ? prevSelected.filter((name) => name !== companyName)
+        : [...prevSelected, companyName]
+    );
+  };
+
+  const handleDeleteSelected = async () => {
+    if (selectedCompanies.length === 0) {
+      showSnackbar("No companies selected for deletion.");
+      return;
+    }
+
+    await handleDeleteMultipleCompanies(selectedCompanies);
+    setSelectedCompanies([]);
+    setRefreshState(!refreshState);
+  };
 
   return (
     <>
       <h2 className="text-[48px] mb-8">Evaluated Companies</h2>
 
-      <div className="relative mt-4 mb-20">
+      <div className="relative mt-4 mb-20 flex flex-col items-center">
         <div className="flex items-center w-[400px] bg-[rgb(54,54,54)] border-[rgb(118,118,118)] border rounded-xl py-2 px-4">
           <input
             type="text"
@@ -38,6 +64,17 @@ export default function EvaluatedCompanies({
             className="flex-grow bg-transparent text-white placeholder-white outline-none hover:opacity-70"
           />
         </div>
+        <button
+          onClick={handleDeleteSelected}
+          disabled={selectedCompanies.length === 0}
+          className={`mt-4 py-2 px-4 rounded-lg ${
+            selectedCompanies.length === 0
+              ? "bg-gray-500 cursor-not-allowed"
+              : "bg-red-600 text-white hover:bg-red-700 transition"
+          }`}
+        >
+          Delete Selected
+        </button>
       </div>
 
       {isLoading ? (
@@ -59,6 +96,10 @@ export default function EvaluatedCompanies({
               <CompanyCard
                 key={company.id || `${company.name}-${index}`}
                 company={company}
+                isSelected={selectedCompanies.includes(company.name)}
+                toggleSelection={toggleSelection}
+                showSnackbar={showSnackbar}
+                refreshData={refreshData}
               />
             ))
           ) : (
