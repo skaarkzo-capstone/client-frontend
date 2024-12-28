@@ -1,13 +1,5 @@
 import { useState, ChangeEvent } from "react";
 
-interface Company {
-  id: string;
-  name: string;
-  date: string;
-  score: number;
-  reasoning: string;
-}
-
 export default function useCompanyFilter(companies: Company[]) {
   const [searchQuery, setSearchQuery] = useState<string>("");
 

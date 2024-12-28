@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchEvaluatedCompanies } from "../services/apiService";
 
-type Company = {
-  id: string;
-  name: string;
-  date: string;
-  score: number;
-  reasoning: string;
-};
-
 const useFetchEvaluatedCompanies = (
   handleError: (context: string, error: unknown) => void,
   refresh: boolean
