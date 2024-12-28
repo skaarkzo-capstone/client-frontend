@@ -15,9 +15,9 @@ export default function EvaluateCompany({
     useEvaluateCompanySearch();
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [checkboxes, setCheckboxes] = useState({
-    website: false,
-    sedar: false,
-    news: false,
+    website: true,
+    sedar: true,
+    news: true,
   });
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
