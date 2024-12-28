@@ -14,6 +14,7 @@ export default function EvaluatedCompanies({
   refresh,
 }: EvaluatedCompaniesProps) {
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
+  const [selectAll, setSelectAll] = useState<boolean>(false);
   const [refreshState, setRefreshState] = useState<boolean>(false);
   const refreshData = () => setRefreshState(!refreshState);
 
@@ -37,6 +38,16 @@ export default function EvaluatedCompanies({
         ? prevSelected.filter((name) => name !== companyName)
         : [...prevSelected, companyName]
     );
+  };
+
+  const toggleSelectAll = () => {
+    if (selectAll) {
+      setSelectedCompanies([]);
+    } else {
+      const allCompanyNames = filteredData.map((company) => company.name);
+      setSelectedCompanies(allCompanyNames);
+    }
+    setSelectAll(!selectAll);
   };
 
   const handleDeleteSelected = async () => {
@@ -82,6 +93,12 @@ export default function EvaluatedCompanies({
       ) : (
         <div>
           <div className="flex items-center py-6 px-4 w-[823px] h-[57px] mb-4">
+            <input
+              type="checkbox"
+              checked={selectAll}
+              onChange={toggleSelectAll}
+              className="mr-4 w-5 h-5"
+            />
             <span className="text-white text-[24px] w-[250px]">
               Company Name
             </span>
