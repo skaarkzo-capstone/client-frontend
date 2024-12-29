@@ -5,4 +5,5 @@ interface Company {
   score: number;
   reasoning: string;
   color: string;
+  compliance: boolean;
 }

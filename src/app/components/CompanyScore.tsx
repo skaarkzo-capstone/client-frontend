@@ -25,7 +25,7 @@ export default function CompanyScore({
       <HoverCard.Trigger asChild>
         <span
           className={clsx(
-            "text-white text-center cursor-pointer rounded-[10px]",
+            "text-white text-center cursor-pointer rounded-[10px] mx-auto",
             bg,
             border
           )}
