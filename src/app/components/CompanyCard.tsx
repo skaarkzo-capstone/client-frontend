@@ -8,9 +8,14 @@ import { getScoreDescription } from "../hooks/utils/getScoreDescription";
 type CompanyProps = {
   company: Company;
   showSnackbar: (message: string) => void;
+  updateCompliance: (companyName: string, compliance: boolean) => void;
 };
 
-export default function CompanyCard({ company, showSnackbar }: CompanyProps) {
+export default function CompanyCard({
+  company,
+  showSnackbar,
+  updateCompliance,
+}: CompanyProps) {
   const { bg, border } = getScoreColor(company.score);
   const { title, description } = getScoreDescription(company.score);
 
@@ -45,6 +50,7 @@ export default function CompanyCard({ company, showSnackbar }: CompanyProps) {
         key={company.id}
         company={company}
         showSnackbar={showSnackbar}
+        updateCompliance={updateCompliance}
       />
     </Dialog>
   );

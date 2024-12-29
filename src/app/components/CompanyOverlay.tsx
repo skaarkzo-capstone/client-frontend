@@ -13,11 +13,13 @@ import useComplianceToggle from "../hooks/useComplianceToggle";
 interface CompanyOverlayProps {
   company: Company;
   showSnackbar: (message: string) => void;
+  updateCompliance: (companyName: string, compliance: boolean) => void;
 }
 
 const CompanyOverlay: React.FC<CompanyOverlayProps> = ({
   company,
   showSnackbar,
+  updateCompliance,
 }) => {
   const { bg, border } = getScoreColor(company.score);
   const { title, description } = getScoreDescription(company.score);
@@ -28,10 +30,12 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({
   const toggleCompliance = async () => {
     try {
       await handleToggleCompliance(company.name);
-      setCompliance((prev) => !prev);
+      const newCompliance = !compliance;
+      setCompliance(newCompliance);
+      updateCompliance(company.name, newCompliance);
       showSnackbar(
         `Compliance for '${company.name}' is now ${
-          !compliance ? "True" : "False"
+          newCompliance ? "True" : "False"
         }`
       );
     } catch (error) {

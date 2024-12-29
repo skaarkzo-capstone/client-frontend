@@ -1,3 +1,4 @@
+import React from "react";
 import useFetchEvaluatedCompanies from "../hooks/useFetchEvaluatedCompanies";
 import useCompanyFilter from "../hooks/useCompanyFilter";
 import CompanyCard from "./CompanyCard";
@@ -17,10 +18,25 @@ export default function EvaluatedCompanies({
     showSnackbar(`Error in ${context}: ${errorMessage}`);
   };
 
-  const { companies, isLoading } = useFetchEvaluatedCompanies(
+  const { companies: initialCompanies, isLoading } = useFetchEvaluatedCompanies(
     handleError,
     refresh
   );
+
+  const [companies, setCompanies] = React.useState<Company[]>([]);
+
+  React.useEffect(() => {
+    setCompanies(initialCompanies);
+  }, [initialCompanies]);
+
+  const updateCompliance = (companyName: string, compliance: boolean) => {
+    setCompanies((prevCompanies) =>
+      prevCompanies.map((company) =>
+        company.name === companyName ? { ...company, compliance } : company
+      )
+    );
+  };
+
   const { searchQuery, handleSearchChange, filteredData } =
     useCompanyFilter(companies);
 
@@ -65,6 +81,7 @@ export default function EvaluatedCompanies({
                 key={company.id || `${company.name}-${index}`}
                 company={company}
                 showSnackbar={showSnackbar}
+                updateCompliance={updateCompliance}
               />
             ))
           ) : (
