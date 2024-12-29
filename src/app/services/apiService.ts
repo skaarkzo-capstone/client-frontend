@@ -100,7 +100,7 @@ export const toggleCompanyCompliance = async (
 };
 
 export const deleteMultipleCompanies = async (
-  company_names: string[]
+  ids: string[]
 ): Promise<{ message: string; success: string[]; failed: string[] }> => {
   const apiUrl = `${API_ENDPOINTS.DELETE_COMPANIES}`;
 
@@ -110,9 +110,7 @@ export const deleteMultipleCompanies = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(
-        company_names.map((company_name) => ({ company_name }))
-      ),
+      body: JSON.stringify(ids.map((id) => ({ id }))),
     });
 
     if (!response.ok) {

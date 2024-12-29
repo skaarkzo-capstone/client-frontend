@@ -3,9 +3,9 @@ import { deleteMultipleCompanies } from "../services/apiService";
 export default function useDeleteCompanies(
   showSnackbar: (message: string) => void
 ) {
-  const handleDeleteMultipleCompanies = async (companyNames: string[]) => {
+  const handleDeleteMultipleCompanies = async (ids: string[]) => {
     try {
-      const response = await deleteMultipleCompanies(companyNames);
+      const response = await deleteMultipleCompanies(ids);
 
       const success = response.success || [];
       const failed = response.failed || [];
