@@ -4,21 +4,35 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { getColor } from "../hooks/utils/getColor";
+import { getScoreColor } from "../hooks/utils/getScoreColor";
+import CompanyScore from "./CompanyScore";
+import { getScoreDescription } from "../hooks/utils/getScoreDescription";
 
 interface CompanyOverlayProps {
   company: Company;
 }
 
 const CompanyOverlay: React.FC<CompanyOverlayProps> = ({ company }) => {
-  const { bg, border } = getColor(company.score);
+  const { bg, border } = getScoreColor(company.score);
+  const { title, description } = getScoreDescription(company.score);
 
   return (
-    <DialogContent className="bg-[rgb(37,37,37)] text-white p-8 pt-12 pl-16 rounded-[20px] border-none sm:max-w-[70vw] h-[70vh] flex flex-col items-start justify-start">
+    <DialogContent
+      className="bg-[rgb(37,37,37)] text-white p-8 pt-12 pl-16 rounded-[20px] border-none sm:max-w-[70vw] h-[70vh] flex flex-col items-start justify-start"
+      style={{ zIndex: 1000 }}
+    >
       <div
-        className={`absolute right-[65px] top-[75px] flex items-center justify-center text-white ${border} rounded-[10px] text-[30px] w-[90px] h-[50px] ${bg} mr-0`}
+        className={`absolute right-[65px] top-[75px] flex items-center justify-center text-[30px] mr-0`}
       >
-        {company.score}
+        <CompanyScore
+          bg={bg}
+          border={border}
+          score={company.score}
+          title={title}
+          description={description}
+          width="90px"
+          height="50px"
+        />
       </div>
 
       <DialogHeader>

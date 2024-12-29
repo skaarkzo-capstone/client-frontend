@@ -1,4 +1,4 @@
-export function getColor(score: number): { bg: string; border: string } {
+export function getScoreColor(score: number): { bg: string; border: string } {
   if (score >= 0 && score <= 4) {
     return { bg: "bg-red-500", border: "border-red-500" };
   } else if (score >= 5 && score <= 7) {

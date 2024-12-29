@@ -1,15 +1,17 @@
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { formatDate } from "../hooks/utils/formatDate";
 import CompanyOverlay from "./CompanyOverlay";
-import { getColor } from "../hooks/utils/getColor";
-import clsx from "clsx";
+import CompanyScore from "./CompanyScore";
+import { getScoreColor } from "../hooks/utils/getScoreColor";
+import { getScoreDescription } from "../hooks/utils/getScoreDescription";
 
 type CompanyProps = {
   company: Company;
 };
 
 export default function CompanyCard({ company }: CompanyProps) {
-  const { bg, border } = getColor(company.score);
+  const { bg, border } = getScoreColor(company.score);
+  const { title, description } = getScoreDescription(company.score);
 
   return (
     <Dialog>
@@ -20,15 +22,16 @@ export default function CompanyCard({ company }: CompanyProps) {
         <span className="text-white text-[20px] w-[200px] mx-auto text-center">
           {formatDate(company.date)}
         </span>
-        <span
-          className={clsx(
-            "text-white text-[20px] w-[67px] h-[33px] ml-auto rounded-[10px] text-center",
-            bg,
-            border
-          )}
-        >
-          {company.score}
-        </span>
+
+        <CompanyScore
+          bg={bg}
+          border={border}
+          score={company.score}
+          title={title}
+          description={description}
+          width="67px"
+          height="33px"
+        />
       </DialogTrigger>
 
       <CompanyOverlay key={company.id} company={company} />
