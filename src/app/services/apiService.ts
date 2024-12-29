@@ -78,7 +78,7 @@ export const toggleCompanyCompliance = async (
 
   try {
     const response = await fetch(apiUrl, {
-      method: "PATCH",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
