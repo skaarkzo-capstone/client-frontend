@@ -1,3 +1,4 @@
+import React from "react";
 import useFetchEvaluatedCompanies from "../hooks/useFetchEvaluatedCompanies";
 import useCompanyFilter from "../hooks/useCompanyFilter";
 import CompanyCard from "./CompanyCard";
@@ -17,10 +18,25 @@ export default function EvaluatedCompanies({
     showSnackbar(`Error in ${context}: ${errorMessage}`);
   };
 
-  const { companies, isLoading } = useFetchEvaluatedCompanies(
+  const { companies: initialCompanies, isLoading } = useFetchEvaluatedCompanies(
     handleError,
     refresh
   );
+
+  const [companies, setCompanies] = React.useState<Company[]>([]);
+
+  React.useEffect(() => {
+    setCompanies(initialCompanies);
+  }, [initialCompanies]);
+
+  const updateCompliance = (companyName: string, compliance: boolean) => {
+    setCompanies((prevCompanies) =>
+      prevCompanies.map((company) =>
+        company.name === companyName ? { ...company, compliance } : company
+      )
+    );
+  };
+
   const { searchQuery, handleSearchChange, filteredData } =
     useCompanyFilter(companies);
 
@@ -44,14 +60,19 @@ export default function EvaluatedCompanies({
         <p className="text-white">Loading...</p>
       ) : (
         <div>
-          <div className="flex items-center py-6 px-4 w-[823px] h-[57px] mb-4">
-            <span className="text-white text-[24px] w-[250px]">
+          <div className="flex items-center py-6 px-4 w-[823px] h-[50px] mb-1">
+            <span className="text-white text-[24px] w-[180px] text-center mr-16">
               Company Name
             </span>
-            <span className="text-white text-[24px] mx-auto w-[200px] text-center">
+            <span className="text-white text-[24px] w-[180px] text-center mr-12">
               Evaluation Date
             </span>
-            <span className="text-white text-[24px] ml-auto">Score</span>
+            <span className="text-white text-[24px] w-[180px] text-center mr-7">
+              Score
+            </span>
+            <span className="text-white text-[24px] w-[170px] text-center">
+              Compliance
+            </span>
           </div>
 
           {filteredData.length > 0 ? (
@@ -59,6 +80,8 @@ export default function EvaluatedCompanies({
               <CompanyCard
                 key={company.id || `${company.name}-${index}`}
                 company={company}
+                showSnackbar={showSnackbar}
+                updateCompliance={updateCompliance}
               />
             ))
           ) : (
