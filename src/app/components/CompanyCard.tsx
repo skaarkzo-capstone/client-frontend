@@ -7,9 +7,10 @@ import { getScoreDescription } from "../hooks/utils/getScoreDescription";
 
 type CompanyProps = {
   company: Company;
+  showSnackbar: (message: string) => void;
 };
 
-export default function CompanyCard({ company }: CompanyProps) {
+export default function CompanyCard({ company, showSnackbar }: CompanyProps) {
   const { bg, border } = getScoreColor(company.score);
   const { title, description } = getScoreDescription(company.score);
 
@@ -34,7 +35,11 @@ export default function CompanyCard({ company }: CompanyProps) {
         />
       </DialogTrigger>
 
-      <CompanyOverlay key={company.id} company={company} />
+      <CompanyOverlay
+        key={company.id}
+        company={company}
+        showSnackbar={showSnackbar}
+      />
     </Dialog>
   );
 }

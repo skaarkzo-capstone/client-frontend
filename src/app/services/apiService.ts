@@ -70,3 +70,31 @@ export const fetchEvaluatedCompanies = async (): Promise<Company[]> => {
     throw new Error("Error fetching evaluated companies: Unknown error");
   }
 };
+
+export const toggleCompanyCompliance = async (
+  company_name: string
+): Promise<{ message: string; updated_company: any }> => {
+  const apiUrl = `${API_ENDPOINTS.TOGGLE_COMPLIANCE}`;
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ company_name }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || "Failed to toggle compliance");
+    }
+
+    return await response.json();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(`Error in API request: ${error.message}`);
+    }
+    throw new Error("Error in API request: Unknown error");
+  }
+};

@@ -59,6 +59,7 @@ export default function EvaluatedCompanies({
               <CompanyCard
                 key={company.id || `${company.name}-${index}`}
                 company={company}
+                showSnackbar={showSnackbar}
               />
             ))
           ) : (
