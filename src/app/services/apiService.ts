@@ -101,7 +101,11 @@ export const toggleCompanyCompliance = async (
 
 export const deleteMultipleCompanies = async (
   ids: string[]
-): Promise<{ message: string; success: string[]; failed: string[] }> => {
+): Promise<{
+  message: string;
+  success: { name: string; id: string }[];
+  failed: string[];
+}> => {
   const apiUrl = `${API_ENDPOINTS.DELETE_COMPANIES}`;
 
   try {
@@ -115,7 +119,9 @@ export const deleteMultipleCompanies = async (
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.detail.message || "Failed to delete companies");
+      throw new Error(
+        errorData.detail?.message || "Failed to delete companies"
+      );
     }
 
     return await response.json();
