@@ -47,11 +47,11 @@ export default function EvaluatedCompanies({
     useCompanyFilter(companies);
   const { handleDeleteMultipleCompanies } = useDeleteCompanies(showSnackbar);
 
-  const toggleSelection = (companyName: string) => {
+  const toggleSelection = (companyId: string) => {
     setSelectedCompanies((prevSelected) =>
-      prevSelected.includes(companyName)
-        ? prevSelected.filter((name) => name !== companyName)
-        : [...prevSelected, companyName]
+      prevSelected.includes(companyId)
+        ? prevSelected.filter((id) => id !== companyId)
+        : [...prevSelected, companyId]
     );
   };
 
@@ -59,8 +59,8 @@ export default function EvaluatedCompanies({
     if (selectAll) {
       setSelectedCompanies([]);
     } else {
-      const allCompanyNames = filteredData.map((company) => company.name);
-      setSelectedCompanies(allCompanyNames);
+      const allCompanyIds = filteredData.map((company) => company.id);
+      setSelectedCompanies(allCompanyIds);
     }
     setSelectAll(!selectAll);
   };

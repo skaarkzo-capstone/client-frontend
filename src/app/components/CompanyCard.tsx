@@ -31,7 +31,7 @@ export default function CompanyCard({
       <input
         type="checkbox"
         checked={isSelected}
-        onChange={() => toggleSelection(company.name)}
+        onChange={() => toggleSelection(company.id)}
         className="mr-4 w-5 h-5"
       />
 

@@ -53,7 +53,7 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({
   const { handleDeleteMultipleCompanies } = useDeleteCompanies(showSnackbar);
 
   const handleDelete = async () => {
-    await handleDeleteMultipleCompanies([company.name]);
+    await handleDeleteMultipleCompanies([company.id]);
     refreshData();
     onClose();
   };
