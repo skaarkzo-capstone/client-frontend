@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useFetchEvaluatedCompanies from "../hooks/useFetchEvaluatedCompanies";
 import useCompanyFilter from "../hooks/useCompanyFilter";
 import useDeleteCompanies from "../hooks/useDeleteCompanies";
+import useComplianceToggle from "../hooks/useComplianceToggle";
 import CompanyCard from "./CompanyCard";
 import ConfirmationDialog from "./ConfirmationDialog";
 
@@ -46,6 +47,7 @@ export default function EvaluatedCompanies({
   const { searchQuery, handleSearchChange, filteredData } =
     useCompanyFilter(companies);
   const { handleDeleteMultipleCompanies } = useDeleteCompanies(showSnackbar);
+  const { handleToggleCompliance } = useComplianceToggle(showSnackbar);
 
   const allSelected =
     filteredData.length > 0 &&
@@ -74,6 +76,19 @@ export default function EvaluatedCompanies({
     setRefreshState(!refreshState);
   };
 
+  const confirmToggleCompliance = async () => {
+    try {
+      const updatedCompanies = await handleToggleCompliance(selectedCompanies);
+      updatedCompanies.forEach(({ id, compliance }) => {
+        updateCompliance(id, compliance);
+      });
+      setSelectedCompanies([]);
+      refreshData();
+    } catch (error) {
+      showSnackbar("Failed to toggle compliance for selected companies.");
+    }
+  };
+
   return (
     <>
       <h2 className="text-[48px] mb-8">Evaluated Companies</h2>
@@ -88,23 +103,36 @@ export default function EvaluatedCompanies({
             className="flex-grow bg-transparent text-white placeholder-white outline-none hover:opacity-70"
           />
         </div>
-        <ConfirmationDialog
-          trigger={
-            <button
-              disabled={selectedCompanies.length === 0}
-              className={`mt-4 py-2 px-4 rounded-lg ${
-                selectedCompanies.length === 0
-                  ? "bg-gray-500 cursor-not-allowed"
-                  : "bg-red-600 text-white hover:bg-red-700 transition"
-              }`}
-            >
-              Delete Selected
-            </button>
-          }
-          title="Confirm Deletion"
-          description="Are you sure you want to delete the selected companies? This action cannot be undone."
-          onConfirm={confirmDeleteSelected}
-        />
+        <div className="flex gap-4 mt-4">
+          <ConfirmationDialog
+            trigger={
+              <button
+                disabled={selectedCompanies.length === 0}
+                className={`py-2 px-4 rounded-lg ${
+                  selectedCompanies.length === 0
+                    ? "bg-gray-500 cursor-not-allowed"
+                    : "bg-red-600 text-white hover:bg-red-700 transition"
+                }`}
+              >
+                Delete Selected
+              </button>
+            }
+            title="Confirm Deletion"
+            description="Are you sure you want to delete the selected companies? This action cannot be undone."
+            onConfirm={confirmDeleteSelected}
+          />
+          <button
+            disabled={selectedCompanies.length === 0}
+            onClick={confirmToggleCompliance}
+            className={`py-2 px-4 rounded-lg ${
+              selectedCompanies.length === 0
+                ? "bg-gray-500 cursor-not-allowed"
+                : "bg-blue-600 text-white hover:bg-blue-700 transition"
+            }`}
+          >
+            Toggle Compliance
+          </button>
+        </div>
       </div>
 
       {isLoading ? (
