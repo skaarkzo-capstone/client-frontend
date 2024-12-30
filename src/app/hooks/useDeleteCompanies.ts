@@ -18,18 +18,7 @@ export default function useDeleteCompanies(
         );
       }
     } catch (error: unknown) {
-      if (error instanceof Response) {
-        try {
-          const errorData = await error.json();
-          showSnackbar(
-            errorData.detail?.message || "Failed to delete companies."
-          );
-        } catch {
-          showSnackbar(
-            "Failed to delete companies. Unexpected error occurred."
-          );
-        }
-      } else if (error instanceof Error) {
+      if (error instanceof Error) {
         showSnackbar(`Error deleting companies: ${error.message}`);
       } else {
         showSnackbar("Error deleting companies: Unknown error.");
