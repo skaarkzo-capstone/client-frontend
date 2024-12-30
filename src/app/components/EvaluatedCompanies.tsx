@@ -3,6 +3,7 @@ import useFetchEvaluatedCompanies from "../hooks/useFetchEvaluatedCompanies";
 import useCompanyFilter from "../hooks/useCompanyFilter";
 import useDeleteCompanies from "../hooks/useDeleteCompanies";
 import CompanyCard from "./CompanyCard";
+import ConfirmationDialog from "./ConfirmationDialog";
 
 interface EvaluatedCompaniesProps {
   showSnackbar: (message: string) => void;
@@ -67,12 +68,7 @@ export default function EvaluatedCompanies({
     }
   };
 
-  const handleDeleteSelected = async () => {
-    if (selectedCompanies.length === 0) {
-      showSnackbar("No companies selected for deletion.");
-      return;
-    }
-
+  const confirmDeleteSelected = async () => {
     await handleDeleteMultipleCompanies(selectedCompanies);
     setSelectedCompanies([]);
     setRefreshState(!refreshState);
@@ -92,17 +88,23 @@ export default function EvaluatedCompanies({
             className="flex-grow bg-transparent text-white placeholder-white outline-none hover:opacity-70"
           />
         </div>
-        <button
-          onClick={handleDeleteSelected}
-          disabled={selectedCompanies.length === 0}
-          className={`mt-4 py-2 px-4 rounded-lg ${
-            selectedCompanies.length === 0
-              ? "bg-gray-500 cursor-not-allowed"
-              : "bg-red-600 text-white hover:bg-red-700 transition"
-          }`}
-        >
-          Delete Selected
-        </button>
+        <ConfirmationDialog
+          trigger={
+            <button
+              disabled={selectedCompanies.length === 0}
+              className={`mt-4 py-2 px-4 rounded-lg ${
+                selectedCompanies.length === 0
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : "bg-red-600 text-white hover:bg-red-700 transition"
+              }`}
+            >
+              Delete Selected
+            </button>
+          }
+          title="Confirm Deletion"
+          description="Are you sure you want to delete the selected companies? This action cannot be undone."
+          onConfirm={confirmDeleteSelected}
+        />
       </div>
 
       {isLoading ? (

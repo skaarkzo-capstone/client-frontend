@@ -10,6 +10,7 @@ import { getScoreDescription } from "../hooks/utils/getScoreDescription";
 import { Switch } from "@/components/ui/switch";
 import useComplianceToggle from "../hooks/useComplianceToggle";
 import useDeleteCompanies from "../hooks/useDeleteCompanies";
+import ConfirmationDialog from "./ConfirmationDialog";
 
 interface CompanyOverlayProps {
   company: Company;
@@ -50,9 +51,10 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({
       showSnackbar("Failed to toggle compliance. Please try again.");
     }
   };
+
   const { handleDeleteMultipleCompanies } = useDeleteCompanies(showSnackbar);
 
-  const handleDelete = async () => {
+  const confirmDelete = async () => {
     await handleDeleteMultipleCompanies([company.id]);
     refreshData();
     onClose();
@@ -75,12 +77,16 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({
           width="90px"
           height="50px"
         />
-        <button
-          onClick={handleDelete}
-          className="ml-4 bg-red-600 text-white text-[14px] py-2 px-4 rounded-lg hover:bg-red-700 transition"
-        >
-          Delete
-        </button>
+        <ConfirmationDialog
+          trigger={
+            <button className="ml-4 bg-red-600 text-white text-[14px] py-2 px-4 rounded-lg hover:bg-red-700 transition">
+              Delete
+            </button>
+          }
+          title="Confirm Deletion"
+          description="Are you sure you want to delete this company? This action cannot be undone."
+          onConfirm={confirmDelete}
+        />
       </div>
 
       <DialogHeader>
