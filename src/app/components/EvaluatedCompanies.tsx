@@ -110,26 +110,28 @@ export default function EvaluatedCompanies({
       {isLoading ? (
         <p className="text-white">Loading...</p>
       ) : (
-        <div>
-          <div className="flex items-center py-6 px-4 w-[823px] h-[50px] mb-1">
+        <div className="flex flex-col items-center">
+          <div className="flex items-center w-full justify-center mb-1">
             <input
               type="checkbox"
               checked={allSelected}
               onChange={toggleSelectAll}
               className="mr-4 w-5 h-5"
             />
-            <span className="text-white text-[24px] w-[180px] text-center mr-16">
-              Company Name
-            </span>
-            <span className="text-white text-[24px] w-[180px] text-center mr-12">
-              Evaluation Date
-            </span>
-            <span className="text-white text-[24px] w-[180px] text-center mr-7">
-              Score
-            </span>
-            <span className="text-white text-[24px] w-[170px] text-center">
-              Compliance
-            </span>
+            <div className="flex items-center py-6 px-4 w-[823px] h-[50px]">
+              <span className="text-white text-[24px] w-[180px] text-center mr-16">
+                Company Name
+              </span>
+              <span className="text-white text-[24px] w-[180px] text-center mr-12">
+                Evaluation Date
+              </span>
+              <span className="text-white text-[24px] w-[180px] text-center mr-7">
+                Score
+              </span>
+              <span className="text-white text-[24px] w-[170px] text-center">
+                Compliance
+              </span>
+            </div>
           </div>
 
           {filteredData.length > 0 ? (
