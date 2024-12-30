@@ -23,10 +23,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${ibarraRealNova.variable} ${aboreto.variable} antialiased`}
-      >
+    <html
+      lang="en"
+      className={`${ibarraRealNova.variable} ${aboreto.variable} antialiased`}
+    >
+      <body className="vsc-initialized" style={{ isolation: "isolate" }}>
         {children}
       </body>
     </html>
