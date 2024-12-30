@@ -14,7 +14,6 @@ export default function EvaluatedCompanies({
   refresh,
 }: EvaluatedCompaniesProps) {
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
-  const [selectAll, setSelectAll] = useState<boolean>(false);
   const [refreshState, setRefreshState] = useState<boolean>(false);
   const refreshData = () => setRefreshState(!refreshState);
 
@@ -35,10 +34,10 @@ export default function EvaluatedCompanies({
     setCompanies(initialCompanies);
   }, [initialCompanies]);
 
-  const updateCompliance = (companyName: string, compliance: boolean) => {
+  const updateCompliance = (companyId: string, compliance: boolean) => {
     setCompanies((prevCompanies) =>
       prevCompanies.map((company) =>
-        company.name === companyName ? { ...company, compliance } : company
+        company.id === companyId ? { ...company, compliance } : company
       )
     );
   };
@@ -46,6 +45,10 @@ export default function EvaluatedCompanies({
   const { searchQuery, handleSearchChange, filteredData } =
     useCompanyFilter(companies);
   const { handleDeleteMultipleCompanies } = useDeleteCompanies(showSnackbar);
+
+  const allSelected =
+    filteredData.length > 0 &&
+    filteredData.every((company) => selectedCompanies.includes(company.id));
 
   const toggleSelection = (companyId: string) => {
     setSelectedCompanies((prevSelected) =>
@@ -56,13 +59,12 @@ export default function EvaluatedCompanies({
   };
 
   const toggleSelectAll = () => {
-    if (selectAll) {
+    if (allSelected) {
       setSelectedCompanies([]);
     } else {
       const allCompanyIds = filteredData.map((company) => company.id);
       setSelectedCompanies(allCompanyIds);
     }
-    setSelectAll(!selectAll);
   };
 
   const handleDeleteSelected = async () => {
@@ -110,7 +112,7 @@ export default function EvaluatedCompanies({
           <div className="flex items-center py-6 px-4 w-[823px] h-[50px] mb-1">
             <input
               type="checkbox"
-              checked={selectAll}
+              checked={allSelected}
               onChange={toggleSelectAll}
               className="mr-4 w-5 h-5"
             />
@@ -133,7 +135,7 @@ export default function EvaluatedCompanies({
               <CompanyCard
                 key={company.id || `${company.name}-${index}`}
                 company={company}
-                isSelected={selectedCompanies.includes(company.name)}
+                isSelected={selectedCompanies.includes(company.id)}
                 toggleSelection={toggleSelection}
                 showSnackbar={showSnackbar}
                 refreshData={refreshData}
