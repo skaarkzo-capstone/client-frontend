@@ -3,10 +3,11 @@ import { toggleCompanyCompliance } from "../services/apiService";
 export default function useComplianceToggle(
   showSnackbar: (message: string) => void
 ) {
-  const handleToggleCompliance = async (companyName: string) => {
+  const handleToggleCompliance = async (ids: string[]) => {
     try {
-      const response = await toggleCompanyCompliance(companyName);
+      const response = await toggleCompanyCompliance(ids);
       showSnackbar(response.message);
+      return response.success;
     } catch (error: unknown) {
       if (error instanceof Error) {
         try {
@@ -24,6 +25,7 @@ export default function useComplianceToggle(
       } else {
         showSnackbar("Error toggling compliance: Unknown error.");
       }
+      return [];
     }
   };
 

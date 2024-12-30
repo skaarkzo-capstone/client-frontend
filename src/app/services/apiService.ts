@@ -72,8 +72,8 @@ export const fetchEvaluatedCompanies = async (): Promise<Company[]> => {
 };
 
 export const toggleCompanyCompliance = async (
-  company_name: string
-): Promise<{ message: string; updated_company: any }> => {
+  ids: string[]
+): Promise<{ message: string; success: any[]; failed: any[] }> => {
   const apiUrl = `${API_ENDPOINTS.TOGGLE_COMPLIANCE}`;
 
   try {
@@ -82,7 +82,7 @@ export const toggleCompanyCompliance = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ company_name }),
+      body: JSON.stringify(ids.map((id) => ({ id }))),
     });
 
     if (!response.ok) {
