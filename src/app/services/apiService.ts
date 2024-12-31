@@ -73,7 +73,7 @@ export const fetchEvaluatedCompanies = async (): Promise<Company[]> => {
 
 export const toggleCompanyCompliance = async (
   ids: string[]
-): Promise<{ message: string; success: any[]; failed: any[] }> => {
+): Promise<{ success: any[]; failed: any[] }> => {
   const apiUrl = `${API_ENDPOINTS.TOGGLE_COMPLIANCE}`;
 
   try {
@@ -91,7 +91,7 @@ export const toggleCompanyCompliance = async (
     }
 
     return await response.json();
-  } catch (error: unknown) {
+  } catch (error) {
     if (error instanceof Error) {
       throw new Error(`Error in API request: ${error.message}`);
     }
@@ -101,11 +101,7 @@ export const toggleCompanyCompliance = async (
 
 export const deleteMultipleCompanies = async (
   ids: string[]
-): Promise<{
-  message: string;
-  success: { name: string; id: string }[];
-  failed: string[];
-}> => {
+): Promise<{ success: { name: string; id: string }[]; failed: string[] }> => {
   const apiUrl = `${API_ENDPOINTS.DELETE_COMPANIES}`;
 
   try {
@@ -125,7 +121,7 @@ export const deleteMultipleCompanies = async (
     }
 
     return await response.json();
-  } catch (error: unknown) {
+  } catch (error) {
     if (error instanceof Error) {
       throw new Error(`Error in API request: ${error.message}`);
     }

@@ -5,23 +5,27 @@ export default function useDeleteCompanies(
 ) {
   const handleDeleteMultipleCompanies = async (ids: string[]) => {
     try {
-      const response = await deleteMultipleCompanies(ids);
+      const { success, failed } = await deleteMultipleCompanies(ids);
 
-      const success = response.success || [];
-      const failed = response.failed || [];
-
-      if (failed.length === 0) {
-        showSnackbar(response.message);
+      if (success.length === 1) {
+        showSnackbar(`Company '${success[0].name}' deleted successfully.`);
+      } else if (success.length > 1) {
+        const companyNames = success.map((comp) => comp.name).join(", ");
+        showSnackbar(`Companies ${companyNames} deleted successfully.`);
       } else {
-        showSnackbar(
-          `Some companies could not be deleted: ${failed.join(", ")}`
-        );
+        showSnackbar("No companies were deleted.");
       }
-    } catch (error: unknown) {
+
+      if (failed.length > 0) {
+        showSnackbar(`Failed to delete some companies: ${failed.join(", ")}`);
+      }
+
+      return success;
+    } catch (error) {
       if (error instanceof Error) {
-        showSnackbar(`Error deleting companies: ${error.message}`);
+        showSnackbar(error.message || "Failed to delete companies.");
       } else {
-        showSnackbar("Error deleting companies: Unknown error.");
+        showSnackbar("Failed to delete companies: Unknown error.");
       }
     }
   };
