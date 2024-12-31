@@ -9,16 +9,22 @@ import CompanyScore from "./CompanyScore";
 import { getScoreDescription } from "../hooks/utils/getScoreDescription";
 import { Switch } from "@/components/ui/switch";
 import useComplianceToggle from "../hooks/useComplianceToggle";
+import useDeleteCompanies from "../hooks/useDeleteCompanies";
+import ConfirmationDialog from "./ConfirmationDialog";
 
 interface CompanyOverlayProps {
   company: Company;
   showSnackbar: (message: string) => void;
   updateCompliance: (companyName: string, compliance: boolean) => void;
+  onClose: () => void;
+  refreshData: () => void;
 }
 
 const CompanyOverlay: React.FC<CompanyOverlayProps> = ({
   company,
   showSnackbar,
+  onClose,
+  refreshData,
   updateCompliance,
 }) => {
   const { bg, border } = getScoreColor(company.score);
@@ -46,6 +52,14 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({
     }
   };
 
+  const { handleDeleteMultipleCompanies } = useDeleteCompanies(showSnackbar);
+
+  const confirmDelete = async () => {
+    await handleDeleteMultipleCompanies([company.id]);
+    refreshData();
+    onClose();
+  };
+
   return (
     <DialogContent
       className="bg-[rgb(37,37,37)] text-white p-8 pt-12 pl-16 rounded-[20px] border-none sm:max-w-[70vw] h-[70vh] flex flex-col items-start justify-start"
@@ -63,6 +77,16 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({
           width="90px"
           height="50px"
         />
+        <ConfirmationDialog
+          trigger={
+            <button className="ml-4 bg-red-600 text-white text-[14px] py-2 px-4 rounded-lg hover:bg-red-700 transition">
+              Delete
+            </button>
+          }
+          title="Confirm Deletion"
+          description="Are you sure you want to delete this company? This action cannot be undone."
+          onConfirm={confirmDelete}
+        />
       </div>
 
       <DialogHeader>
@@ -78,7 +102,7 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({
         <hr className="border-white-300 w-[65vw]" />
       </DialogHeader>
 
-      <div className="mt-[130] items-center justify-center w-full overflow-y-auto overflow-x-hidden">
+      <div className="mt-[130px] items-center justify-center w-full overflow-y-auto overflow-x-hidden">
         <p className="text-[43px] mb-2">Reasoning</p>
         {company.reasoning && Object.entries(company.reasoning).length > 0 ? (
           <div className="text-[24px] mt-5">
