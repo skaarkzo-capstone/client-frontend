@@ -29,15 +29,17 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({
 
   const toggleCompliance = async () => {
     try {
-      await handleToggleCompliance(company.name);
-      const newCompliance = !compliance;
-      setCompliance(newCompliance);
-      updateCompliance(company.name, newCompliance);
-      showSnackbar(
-        `Compliance for '${company.name}' is now ${
-          newCompliance ? "True" : "False"
-        }`
-      );
+      const updatedCompanies = await handleToggleCompliance([company.id]);
+      if (updatedCompanies.length > 0) {
+        const newCompliance = updatedCompanies[0].compliance;
+        setCompliance(newCompliance);
+        updateCompliance(company.id, newCompliance);
+        showSnackbar(
+          `Compliance for '${company.name}' is now ${
+            newCompliance ? "True" : "False"
+          }`
+        );
+      }
     } catch (error) {
       console.error("Error toggling compliance:", error);
       showSnackbar("Failed to toggle compliance. Please try again.");

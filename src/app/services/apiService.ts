@@ -72,8 +72,8 @@ export const fetchEvaluatedCompanies = async (): Promise<Company[]> => {
 };
 
 export const toggleCompanyCompliance = async (
-  company_name: string
-): Promise<{ message: string; updated_company: any }> => {
+  ids: string[]
+): Promise<{ success: any[]; failed: any[] }> => {
   const apiUrl = `${API_ENDPOINTS.TOGGLE_COMPLIANCE}`;
 
   try {
@@ -82,7 +82,7 @@ export const toggleCompanyCompliance = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ company_name }),
+      body: JSON.stringify(ids.map((id) => ({ id }))),
     });
 
     if (!response.ok) {
@@ -91,7 +91,37 @@ export const toggleCompanyCompliance = async (
     }
 
     return await response.json();
-  } catch (error: unknown) {
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Error in API request: ${error.message}`);
+    }
+    throw new Error("Error in API request: Unknown error");
+  }
+};
+
+export const deleteMultipleCompanies = async (
+  ids: string[]
+): Promise<{ success: { name: string; id: string }[]; failed: string[] }> => {
+  const apiUrl = `${API_ENDPOINTS.DELETE_COMPANIES}`;
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(ids.map((id) => ({ id }))),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.detail?.message || "Failed to delete companies"
+      );
+    }
+
+    return await response.json();
+  } catch (error) {
     if (error instanceof Error) {
       throw new Error(`Error in API request: ${error.message}`);
     }
