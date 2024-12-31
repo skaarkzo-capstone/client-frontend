@@ -5,25 +5,35 @@ export default function useComplianceToggle(
 ) {
   const handleToggleCompliance = async (ids: string[]) => {
     try {
-      const response = await toggleCompanyCompliance(ids);
-      showSnackbar(response.message);
-      return response.success;
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        try {
-          const errorData = JSON.parse(error.message);
-          showSnackbar(
-            errorData.detail || "Failed to toggle compliance. Please try again."
-          );
-        } catch {
-          showSnackbar(error.message || "Failed to toggle compliance.");
-        }
-      } else if (typeof error === "object" && error !== null) {
+      const { success, failed } = await toggleCompanyCompliance(ids);
+
+      if (success.length === 1) {
         showSnackbar(
-          `Error toggling compliance: ${JSON.stringify(error, null, 2)}`
+          `Compliance for company '${success[0].name}' updated successfully.`
+        );
+      } else if (success.length > 1) {
+        const companyNames = success.map((comp) => comp.name).join(", ");
+        showSnackbar(
+          `Compliance for companies ${companyNames} updated successfully.`
         );
       } else {
-        showSnackbar("Error toggling compliance: Unknown error.");
+        showSnackbar("No companies were updated.");
+      }
+
+      if (failed.length > 0) {
+        showSnackbar(
+          `Failed to update compliance for some companies: ${failed
+            .map((f) => f.id)
+            .join(", ")}`
+        );
+      }
+
+      return success;
+    } catch (error) {
+      if (error instanceof Error) {
+        showSnackbar(error.message || "Failed to toggle compliance.");
+      } else {
+        showSnackbar("Failed to toggle compliance: Unknown error.");
       }
       return [];
     }
