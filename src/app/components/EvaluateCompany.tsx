@@ -11,7 +11,7 @@ export default function EvaluateCompany({
   showSnackbar,
   triggerRefresh,
 }: EvaluateCompanyProps) {
-  const { inputValue, handleInputChange, logMessage } =
+  const { inputValue, handleInputChange, logMessage, cancelRequest } =
     useEvaluateCompanySearch();
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [checkboxes, setCheckboxes] = useState({
@@ -36,7 +36,9 @@ export default function EvaluateCompany({
       return;
     }
 
+    showSnackbar(`Starting evaluation of ${inputValue}...`);
     setIsButtonDisabled(true);
+
     try {
       await logMessage(inputValue, checkboxes);
       triggerRefresh();
@@ -45,6 +47,11 @@ export default function EvaluateCompany({
     } finally {
       setIsButtonDisabled(false);
     }
+  };
+
+  const handleCancelRequest = () => {
+    cancelRequest(() => showSnackbar("Request cancelled"));
+    setIsButtonDisabled(false);
   };
 
   return (
@@ -62,7 +69,10 @@ export default function EvaluateCompany({
           className="flex-grow bg-transparent text-white placeholder-white outline-none hover:opacity-70"
         />
 
-        <button onClick={handleLogMessage} disabled={isButtonDisabled}>
+        <button
+          onClick={isButtonDisabled ? handleCancelRequest : handleLogMessage}
+          disabled={isButtonDisabled && !cancelRequest}
+        >
           <div
             className={`flex items-center justify-center w-8 h-8 ml-2 border rounded-3xl ${
               isButtonDisabled
