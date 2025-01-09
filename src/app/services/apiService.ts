@@ -6,7 +6,11 @@ const isError = (error: unknown): error is Error => {
 
 export const postCompanySearch = async (
   company_name: string,
-  checkboxes: { website: boolean; sedar: boolean; news: boolean },
+  checkboxes: {
+    website: boolean;
+    annualreport: boolean;
+    responsibilityreports: boolean;
+  },
   controller: AbortController
 ): Promise<Company[]> => {
   const apiUrl = API_ENDPOINTS.POST_COMPANY_SEARCH;
