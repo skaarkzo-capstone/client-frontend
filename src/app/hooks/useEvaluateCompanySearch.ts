@@ -10,8 +10,8 @@ const useEvaluateCompanySearch = () => {
     companyName: string,
     checkboxes: {
       website: boolean;
-      annualreport: boolean;
-      responsibilityreports: boolean;
+      annual_report: boolean;
+      responsibility_report: boolean;
     }
   ) => {
     if (!companyName.trim()) {

@@ -8,8 +8,8 @@ export const postCompanySearch = async (
   company_name: string,
   checkboxes: {
     website: boolean;
-    annualreport: boolean;
-    responsibilityreports: boolean;
+    annual_report: boolean;
+    responsibility_report: boolean;
   },
   controller: AbortController
 ): Promise<Company[]> => {

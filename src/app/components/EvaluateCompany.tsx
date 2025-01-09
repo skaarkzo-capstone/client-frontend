@@ -16,8 +16,8 @@ export default function EvaluateCompany({
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [checkboxes, setCheckboxes] = useState({
     website: true,
-    annualreport: true,
-    responsibilityreports: true,
+    annual_report: true,
+    responsibility_report: true,
   });
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,8 +99,8 @@ export default function EvaluateCompany({
         <label className="flex items-center text-white">
           <input
             type="checkbox"
-            name="annualreport"
-            checked={checkboxes.annualreport}
+            name="annual_report"
+            checked={checkboxes.annual_report}
             onChange={handleCheckboxChange}
             className="mr-2"
           />
@@ -109,8 +109,8 @@ export default function EvaluateCompany({
         <label className="flex items-center text-white">
           <input
             type="checkbox"
-            name="responsibilityreports"
-            checked={checkboxes.responsibilityreports}
+            name="responsibility_report"
+            checked={checkboxes.responsibility_report}
             onChange={handleCheckboxChange}
             className="mr-2"
           />
