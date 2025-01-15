@@ -8,7 +8,11 @@ const useEvaluateCompanySearch = () => {
 
   const logMessage = async (
     companyName: string,
-    checkboxes: { website: boolean; sedar: boolean; news: boolean }
+    checkboxes: {
+      website: boolean;
+      annual_report: boolean;
+      responsibility_report: boolean;
+    }
   ) => {
     if (!companyName.trim()) {
       throw new Error("Company name cannot be empty.");
