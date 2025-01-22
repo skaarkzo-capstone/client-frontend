@@ -146,15 +146,12 @@ export default function EvaluatedCompanies({
               onChange={toggleSelectAll}
               className="mr-4 w-5 h-5"
             />
-            <div className="flex items-center py-6 px-4 w-[823px] h-[50px]">
+            <div className="flex items-center py-6 px-4 w-[623px] h-[50px]">
               <span className="text-white text-[24px] w-[180px] text-center mr-16">
                 Company Name
               </span>
               <span className="text-white text-[24px] w-[180px] text-center mr-12">
                 Evaluation Date
-              </span>
-              <span className="text-white text-[24px] w-[180px] text-center mr-7">
-                Score
               </span>
               <span className="text-white text-[24px] w-[170px] text-center">
                 Compliance
