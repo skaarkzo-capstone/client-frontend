@@ -4,9 +4,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { getScoreColor } from "../hooks/utils/getScoreColor";
-import CompanyScore from "./CompanyScore";
-import { getScoreDescription } from "../hooks/utils/getScoreDescription";
 import { Switch } from "@/components/ui/switch";
 import useComplianceToggle from "../hooks/useComplianceToggle";
 import useDeleteCompanies from "../hooks/useDeleteCompanies";
@@ -27,9 +24,6 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({
   refreshData,
   updateCompliance,
 }) => {
-  const { bg, border } = getScoreColor(company.score);
-  const { title, description } = getScoreDescription(company.score);
-
   const [compliance, setCompliance] = useState(company.compliance);
   const { handleToggleCompliance } = useComplianceToggle(showSnackbar);
 
@@ -68,15 +62,6 @@ const CompanyOverlay: React.FC<CompanyOverlayProps> = ({
       <div
         className={`absolute right-[65px] top-[75px] flex items-center justify-center text-[30px] mr-0`}
       >
-        <CompanyScore
-          bg={bg}
-          border={border}
-          score={company.score}
-          title={title}
-          description={description}
-          width="90px"
-          height="50px"
-        />
         <ConfirmationDialog
           trigger={
             <button className="ml-4 bg-red-600 text-white text-[14px] py-2 px-4 rounded-lg hover:bg-red-700 transition">
